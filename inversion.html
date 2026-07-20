@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Detalles profundos de la ronda de inversión Fase 2 para M3D Microfábrica 3D Cardel.">
+    <title>M3D — Oportunidad de Inversión Ronda $248K USD</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: "#080C14",
+                            card: "rgba(13, 20, 32, 0.85)",
+                            light: "#141D2D"
+                        },
+                        orange: {
+                            DEFAULT: "#FF5A00",
+                            glow: "rgba(255, 90, 0, 0.4)",
+                            bright: "#FF7700"
+                        },
+                        cyan: {
+                            DEFAULT: "#00F0FF",
+                            glow: "rgba(0, 240, 255, 0.3)"
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --color-navy: #080C14;
+            --color-orange: #FF5A00;
+            --color-cyan: #00F0FF;
+        }
+
+        body {
+            background-color: var(--color-navy);
+            color: #F3F4F6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .vivid-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 90, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 90, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+            background-position: center center;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            opacity: 0.4;
+            animation: orb-pulse 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes orb-pulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.35; }
+            100% { transform: scale(1.25) translate(30px, -20px); opacity: 0.55; }
+        }
+
+        .glass-card-pro {
+            background: rgba(13, 20, 32, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 90, 0, 0.4);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card-pro:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(255, 90, 0, 0.6);
+            box-shadow: 0 20px 40px -10px rgba(255, 90, 0, 0.25), 0 0 20px rgba(255, 90, 0, 0.15);
+        }
+
+        .title-gradient {
+            background: linear-gradient(135deg, #FFFFFF 20%, #E2E8F0 50%, #FF5A00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .orange-glow-text {
+            color: #FF5A00;
+            text-shadow: 0 0 15px rgba(255, 90, 0, 0.5);
+        }
+
+        .corner-brackets { position: relative; }
+        .corner-brackets::before {
+            content: ''; position: absolute; top: -2px; left: -2px; width: 14px; height: 14px;
+            border-top: 2px solid #FF5A00; border-left: 2px solid #FF5A00;
+        }
+        .corner-brackets::after {
+            content: ''; position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
+            border-bottom: 2px solid #FF5A00; border-right: 2px solid #FF5A00;
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #FF5A00, #00F0FF, transparent);
+            animation: scan 4s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+
+<body class="vivid-grid min-h-screen relative">
+    
+    <div class="glow-orb w-[500px] h-[500px] bg-orange-DEFAULT top-[-100px] left-[-100px]"></div>
+    <div class="glow-orb w-[600px] h-[600px] bg-cyan-DEFAULT top-[400px] right-[-150px]" style="animation-delay: -4s;"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-navy-DEFAULT/85 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- LOGO AS THE HOME LINK -->
+            <a href="index.html" title="Ir a Portada Principal" class="flex items-center gap-3 group cursor-pointer">
+                <div class="w-10 h-10 rounded bg-gradient-to-br from-orange-DEFAULT to-orange-bright flex items-center justify-center font-mono font-black text-navy-DEFAULT text-xl shadow-lg group-hover:scale-105 transition-transform">
+                    M3
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-mono font-black text-xl tracking-tight text-white group-hover:text-orange-DEFAULT transition-colors">M3D<span class="text-orange-DEFAULT">_</span></span>
+                    <span class="font-mono text-[9px] text-slate-400 uppercase tracking-widest">MICROFÁBRICA 3D</span>
+                </div>
+            </a>
+            
+            <!-- NAV ITEMS (NO INICIO/PORTADA ITEM HERE) -->
+            <nav class="hidden md:flex items-center gap-8 font-mono text-xs font-bold uppercase tracking-widest text-slate-300">
+                <a href="por-que.html" class="hover:text-orange-DEFAULT transition-colors">Por qué</a>
+                <a href="segmentos.html" class="hover:text-orange-DEFAULT transition-colors">Segmentos</a>
+                <a href="finanzas.html" class="hover:text-orange-DEFAULT transition-colors">Finanzas</a>
+                <a href="inversion.html" class="text-orange-DEFAULT border-b-2 border-orange-DEFAULT pb-1">Inversión</a>
+                <a href="hoja-de-ruta.html" class="hover:text-orange-DEFAULT transition-colors">Roadmap</a>
+            </nav>
+
+            <a href="contacto.html" class="px-6 py-2.5 rounded font-mono text-xs font-black uppercase tracking-widest bg-gradient-to-r from-orange-DEFAULT to-orange-bright text-navy-DEFAULT shadow-lg hover:shadow-orange-DEFAULT/40 hover:scale-105 transition-all">
+                DATA ROOM
+            </a>
+        </div>
+        <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-orange-DEFAULT to-transparent opacity-75"></div>
+    </header>
+
+
+    <main class="max-w-7xl mx-auto px-6 pt-36 pb-20 flex flex-col gap-16">
+        
+        <div class="flex flex-col items-start gap-4">
+            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-orange-DEFAULT/10 border border-orange-DEFAULT/30 backdrop-blur-md font-mono text-xs font-bold uppercase tracking-widest text-orange-DEFAULT">
+                DEEP-DIVE &middot; OPORTUNIDAD DE INVERSIÓN
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black title-gradient tracking-tight">
+                Ronda Semilla Fase 2: $248,000 USD
+            </h1>
+        </div>
+
+        <!-- Visual Capital Allocation Bar -->
+        <div class="glass-card-pro p-8 rounded-xl flex flex-col gap-6">
+            <h2 class="text-2xl font-bold text-white font-mono">ASIGNACIÓN DEL CAPITAL ($248K USD)</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 font-mono text-xs">
+                <div class="p-4 bg-navy-DEFAULT border border-orange-DEFAULT/40 rounded flex flex-col justify-between">
+                    <span class="text-slate-400">4 MAQUINARIAS FMS</span>
+                    <strong class="text-2xl text-orange-DEFAULT font-black my-2">$145K</strong>
+                    <span class="text-slate-400">58.4% DEL TOTAL</span>
+                </div>
+                <div class="p-4 bg-navy-DEFAULT border border-white/10 rounded flex flex-col justify-between">
+                    <span class="text-slate-400">ESCÁNER LASER 3D</span>
+                    <strong class="text-2xl text-white font-black my-2">$45K</strong>
+                    <span class="text-slate-400">18.1% DEL TOTAL</span>
+                </div>
+                <div class="p-4 bg-navy-DEFAULT border border-white/10 rounded flex flex-col justify-between">
+                    <span class="text-slate-400">POST-PROCESAMIENTO</span>
+                    <strong class="text-2xl text-white font-black my-2">$30K</strong>
+                    <span class="text-slate-400">12.1% DEL TOTAL</span>
+                </div>
+                <div class="p-4 bg-navy-DEFAULT border border-cyan-DEFAULT/40 rounded flex flex-col justify-between">
+                    <span class="text-slate-400">CAPITAL TRABAJO (6M)</span>
+                    <strong class="text-2xl text-cyan-DEFAULT font-black my-2">$28K</strong>
+                    <span class="text-slate-400">11.4% DEL TOTAL</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="glass-card-pro p-8 rounded-xl">
+                <span class="font-mono text-xs text-orange-DEFAULT font-bold uppercase block mb-2">RETORNO ESTIMADO</span>
+                <h3 class="text-2xl font-bold text-white mb-4">Escenarios de Rendimiento</h3>
+                <div class="space-y-4 font-mono text-xs">
+                    <div class="flex justify-between p-3 bg-navy-DEFAULT rounded border border-white/10">
+                        <span class="text-slate-300">ESCENARIO BASE (5 AÑOS)</span>
+                        <strong class="text-orange-DEFAULT text-base">+$3,050,000 MXN</strong>
+                    </div>
+                    <div class="flex justify-between p-3 bg-navy-DEFAULT rounded border border-white/10">
+                        <span class="text-slate-300">ESCENARIO OPTIMISTA</span>
+                        <strong class="text-cyan-DEFAULT text-base">+$6,440,000 MXN</strong>
+                    </div>
+                    <div class="flex justify-between p-3 bg-navy-DEFAULT rounded border border-white/10">
+                        <span class="text-slate-300">PERIODO DE RECUPERACIÓN</span>
+                        <strong class="text-white text-base">MES 3 DE OPERACIÓN</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card-pro p-8 rounded-xl flex flex-col justify-between">
+                <div>
+                    <span class="font-mono text-xs text-cyan-DEFAULT font-bold uppercase block mb-2">MECANISMOS DE SALIDA</span>
+                    <h3 class="text-2xl font-bold text-white mb-4">Dividendos & Retorno</h3>
+                    <ul class="space-y-3 font-mono text-xs text-slate-300">
+                        <li class="flex items-center gap-2"><span class="material-symbols-outlined text-orange-DEFAULT">check_circle</span> Distribución trimestral de dividendos netos.</li>
+                        <li class="flex items-center gap-2"><span class="material-symbols-outlined text-orange-DEFAULT">check_circle</span> Tasa ISR retenido preferencial RESICO (1% - 2.5%).</li>
+                        <li class="flex items-center gap-2"><span class="material-symbols-outlined text-orange-DEFAULT">check_circle</span> Opción de recompra de acciones o venta estratégica a grupo industrial.</li>
+                    </ul>
+                </div>
+                <a href="contacto.html" class="mt-6 w-full py-3 rounded font-mono text-xs font-black uppercase tracking-wider bg-orange-DEFAULT text-navy-DEFAULT text-center shadow-lg hover:bg-orange-bright transition-all">
+                    SOLICITAR MODELO COMPLETO EN EXCEL
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    
+    <footer class="bg-navy-DEFAULT border-t border-white/10 py-12 relative mt-24">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-8 h-8 rounded bg-orange-DEFAULT font-mono font-black text-navy-DEFAULT flex items-center justify-center">M3</div>
+                <span class="font-mono font-bold text-slate-300">© 2026 M3D Microfábrica 3D Cardel. Todos los derechos reservados.</span>
+            </a>
+            <div class="flex gap-6 font-mono text-xs text-slate-400 uppercase">
+                <a href="por-que.html" class="hover:text-orange-DEFAULT transition-colors">Por qué</a>
+                <a href="segmentos.html" class="hover:text-orange-DEFAULT transition-colors">Segmentos</a>
+                <a href="finanzas.html" class="hover:text-orange-DEFAULT transition-colors">Finanzas</a>
+                <a href="inversion.html" class="hover:text-orange-DEFAULT transition-colors">Inversión</a>
+                <a href="hoja-de-ruta.html" class="hover:text-orange-DEFAULT transition-colors">Roadmap</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

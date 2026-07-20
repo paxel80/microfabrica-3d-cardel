@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Análisis profundo de los 4 pilares estructurales de M3D: Monopolio geográfico en 120 km, 82% margen bruto, velocidad 24-72h y trazabilidad 100%.">
+    <title>M3D — Análisis Detallado: Ventaja & Moat Competitivo</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: "#080C14",
+                            card: "rgba(13, 20, 32, 0.8)",
+                            light: "#141D2D"
+                        },
+                        orange: {
+                            DEFAULT: "#FF5A00",
+                            glow: "rgba(255, 90, 0, 0.4)",
+                            bright: "#FF7700"
+                        },
+                        cyan: {
+                            DEFAULT: "#00F0FF",
+                            glow: "rgba(0, 240, 255, 0.3)"
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --color-navy: #080C14;
+            --color-orange: #FF5A00;
+            --color-cyan: #00F0FF;
+        }
+
+        body {
+            background-color: var(--color-navy);
+            color: #F3F4F6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .vivid-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 90, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 90, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+            background-position: center center;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            opacity: 0.4;
+            animation: orb-pulse 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes orb-pulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.35; }
+            100% { transform: scale(1.25) translate(30px, -20px); opacity: 0.55; }
+        }
+
+        .glass-card-pro {
+            background: rgba(13, 20, 32, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 90, 0, 0.4);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card-pro:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(255, 90, 0, 0.6);
+            box-shadow: 0 20px 40px -10px rgba(255, 90, 0, 0.25), 0 0 20px rgba(255, 90, 0, 0.15);
+        }
+
+        .title-gradient {
+            background: linear-gradient(135deg, #FFFFFF 20%, #E2E8F0 50%, #FF5A00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .orange-glow-text {
+            color: #FF5A00;
+            text-shadow: 0 0 15px rgba(255, 90, 0, 0.5);
+        }
+
+        .corner-brackets { position: relative; }
+        .corner-brackets::before {
+            content: ''; position: absolute; top: -2px; left: -2px; width: 14px; height: 14px;
+            border-top: 2px solid #FF5A00; border-left: 2px solid #FF5A00;
+        }
+        .corner-brackets::after {
+            content: ''; position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
+            border-bottom: 2px solid #FF5A00; border-right: 2px solid #FF5A00;
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #FF5A00, #00F0FF, transparent);
+            animation: scan 4s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+
+<body class="vivid-grid min-h-screen relative">
+    
+    <div class="glow-orb w-[500px] h-[500px] bg-orange-DEFAULT top-[-100px] left-[-100px]"></div>
+    <div class="glow-orb w-[600px] h-[600px] bg-cyan-DEFAULT top-[400px] right-[-150px]" style="animation-delay: -4s;"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-navy-DEFAULT/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded bg-gradient-to-br from-orange-DEFAULT to-orange-bright flex items-center justify-center font-mono font-black text-navy-DEFAULT text-xl shadow-lg group-hover:scale-105 transition-transform">
+                    M3
+                </div>
+                <span class="font-mono font-black text-xl tracking-tight text-white">M3D<span class="text-orange-DEFAULT">_</span></span>
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-8 font-mono text-xs font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-orange-DEFAULT transition-colors">Portada / Resumen</a>
+                <a href="por-que.html" class="text-orange-DEFAULT border-b-2 border-orange-DEFAULT pb-1">Por qué</a>
+                <a href="segmentos.html" class="hover:text-orange-DEFAULT transition-colors">Segmentos</a>
+                <a href="finanzas.html" class="hover:text-orange-DEFAULT transition-colors">Finanzas</a>
+                <a href="inversion.html" class="hover:text-orange-DEFAULT transition-colors">Inversión</a>
+                <a href="hoja-de-ruta.html" class="hover:text-orange-DEFAULT transition-colors">Roadmap</a>
+            </nav>
+
+            <a href="contacto.html" class="px-6 py-2.5 rounded font-mono text-xs font-black uppercase tracking-widest bg-gradient-to-r from-orange-DEFAULT to-orange-bright text-navy-DEFAULT shadow-lg hover:shadow-orange-DEFAULT/40 hover:scale-105 transition-all">
+                DATA ROOM
+            </a>
+        </div>
+        <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-orange-DEFAULT to-transparent opacity-75"></div>
+    </header>
+
+
+    <main class="max-w-7xl mx-auto px-6 pt-36 pb-20 flex flex-col gap-16">
+        
+        <div class="flex flex-col items-start gap-4">
+            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-orange-DEFAULT/10 border border-orange-DEFAULT/30 backdrop-blur-md font-mono text-xs font-bold uppercase tracking-widest text-orange-DEFAULT">
+                DEEP-DIVE &middot; VENTAJA COMPETITIVA
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black title-gradient tracking-tight">
+                Análisis Detallado de los 4 Pilares
+            </h1>
+            <p class="text-lg text-slate-300 font-light max-w-3xl leading-relaxed">
+                M3D no compite por precio ni por volumen genérico. Nuestra arquitectura de negocio está diseñada para resolver los tres puntos de dolor más costosos en la industria pesada del Golfo de México: tiempo de inactividad, abastecimiento distante y falta de certificación de materiales.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Pillar 1 Deep Dive -->
+            <div class="glass-card-pro p-8 rounded-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="font-mono text-3xl font-black text-orange-DEFAULT">01 // MONOPOLIO LOCAL</span>
+                        <span class="material-symbols-outlined text-orange-DEFAULT text-3xl">location_off</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-4">Cero Competencia en 120 KM</h2>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed mb-6">
+                        José Cardel es un nudo logístico crucial entre el Puerto de Veracruz y los complejos industriales y agroindustriales del centro del estado (ingenios San Cristóbal, El Modelo, planta CFE Laguna Verde). M3D es el único taller con maquinaria de grado ingeniería (cámara caliente a 200°C) en un radio de 120 km, asegurando una ventana sin competidores de 18 a 24 meses.
+                    </p>
+                    <div class="p-4 bg-navy-DEFAULT/80 border border-white/10 rounded font-mono text-xs space-y-2">
+                        <div class="flex justify-between"><span class="text-slate-400">TIEMPO LLEGADA VERACRUZ:</span><strong class="text-white">35 MINUTOS</strong></div>
+                        <div class="flex justify-between"><span class="text-slate-400">PLANTAS INDUSTRIALES CERCA:</span><strong class="text-orange-DEFAULT">+14 INSTALACIONES</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pillar 2 Deep Dive -->
+            <div class="glass-card-pro p-8 rounded-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="font-mono text-3xl font-black text-cyan-DEFAULT">02 // MARGENES PROYECTADOS</span>
+                        <span class="material-symbols-outlined text-cyan-DEFAULT text-3xl">savings</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-4">Margen Bruto del ~82%</h2>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed mb-6">
+                        En la manufactura aditiva, el costo de materia prima (pellets y filamento industrial) representa menos del 15% del precio final cobrado al cliente industrial, ya que el valor percibido se mide en función de las horas de inactividad que M3D ahorra al cliente. El punto de equilibrio operativo se alcanza con solo 5 a 6 piezas/mes.
+                    </p>
+                    <div class="p-4 bg-navy-DEFAULT/80 border border-white/10 rounded font-mono text-xs space-y-2">
+                        <div class="flex justify-between"><span class="text-slate-400">COSTO MATERIA PRIMA PROMEDIO:</span><strong class="text-white">12% - 15%</strong></div>
+                        <div class="flex justify-between"><span class="text-slate-400">BREAKEVEN OPERATIVO:</span><strong class="text-cyan-DEFAULT">5-6 JOBS/MES</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pillar 3 Deep Dive -->
+            <div class="glass-card-pro p-8 rounded-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="font-mono text-3xl font-black text-orange-DEFAULT">03 // RESPUESTA INMEDIATA</span>
+                        <span class="material-symbols-outlined text-orange-DEFAULT text-3xl">timer</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-4">Entrega en 24 a 72 Horas</h2>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed mb-6">
+                        Frente a los plazos de importación de 4 a 12 semanas de piezas descontinuadas de fabricantes extranjeros, M3D escanea, modela e imprime piezas mecánicas operativas en un plazo de 24 a 72 horas. Esto elimina el costo de almacenamiento físico para nuestros clientes mediante inventarios digitales.
+                    </p>
+                    <div class="p-4 bg-navy-DEFAULT/80 border border-white/10 rounded font-mono text-xs space-y-2">
+                        <div class="flex justify-between"><span class="text-slate-400">TIEMPO TRADICIONAL IMPORTACIÓN:</span><strong class="text-white">4 - 12 SEMANAS</strong></div>
+                        <div class="flex justify-between"><span class="text-slate-400">TIEMPO M3D DIGITAL:</span><strong class="text-orange-DEFAULT">24 - 72 HORAS</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pillar 4 Deep Dive -->
+            <div class="glass-card-pro p-8 rounded-xl flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="font-mono text-3xl font-black text-cyan-DEFAULT">04 // CALIDAD AUDITABLE</span>
+                        <span class="material-symbols-outlined text-cyan-DEFAULT text-3xl">verified</span>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white mb-4">Trazabilidad Digital del 100%</h2>
+                    <p class="text-slate-300 text-sm font-light leading-relaxed mb-6">
+                        Las empresas del sector marítimo y energético requieren certificar el origen de cada componente. M3D entrega con cada pieza una ficha técnica digital cifrada que documenta la marca del filamento, lote, temperaturas de extrusión, orientación de capa y pruebas de tensión.
+                    </p>
+                    <div class="p-4 bg-navy-DEFAULT/80 border border-white/10 rounded font-mono text-xs space-y-2">
+                        <div class="flex justify-between"><span class="text-slate-400">DOCUMENTACIÓN POR PIEZA:</span><strong class="text-white">FICHA TÉCNICA PDF/CAD</strong></div>
+                        <div class="flex justify-between"><span class="text-slate-400">REGISTRO DE PROCESO:</span><strong class="text-cyan-DEFAULT">100% COMPLETO</strong></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    
+    <footer class="bg-navy-DEFAULT border-t border-white/10 py-12 relative mt-24">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-orange-DEFAULT font-mono font-black text-navy-DEFAULT flex items-center justify-center">M3</div>
+                <span class="font-mono font-bold text-slate-300">© 2026 M3D Microfábrica 3D Cardel. Todos los derechos reservados.</span>
+            </div>
+            <div class="flex gap-6 font-mono text-xs text-slate-400 uppercase">
+                <a href="index.html" class="hover:text-orange-DEFAULT transition-colors">Portada</a>
+                <a href="por-que.html" class="hover:text-orange-DEFAULT transition-colors">Por qué</a>
+                <a href="segmentos.html" class="hover:text-orange-DEFAULT transition-colors">Segmentos</a>
+                <a href="finanzas.html" class="hover:text-orange-DEFAULT transition-colors">Finanzas</a>
+                <a href="inversion.html" class="hover:text-orange-DEFAULT transition-colors">Inversión</a>
+                <a href="hoja-de-ruta.html" class="hover:text-orange-DEFAULT transition-colors">Roadmap</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

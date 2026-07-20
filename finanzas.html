@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Modelo financiero completo de M3D: Estructura de costos, EBITDA proyectado, estrategia fiscal RESICO (1-2.5% ISR) y Payback.">
+    <title>M3D — Análisis Detallado: Finanzas & Economics</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            DEFAULT: "#080C14",
+                            card: "rgba(13, 20, 32, 0.8)",
+                            light: "#141D2D"
+                        },
+                        orange: {
+                            DEFAULT: "#FF5A00",
+                            glow: "rgba(255, 90, 0, 0.4)",
+                            bright: "#FF7700"
+                        },
+                        cyan: {
+                            DEFAULT: "#00F0FF",
+                            glow: "rgba(0, 240, 255, 0.3)"
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        :root {
+            --color-navy: #080C14;
+            --color-orange: #FF5A00;
+            --color-cyan: #00F0FF;
+        }
+
+        body {
+            background-color: var(--color-navy);
+            color: #F3F4F6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .vivid-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 90, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 90, 0, 0.08) 1px, transparent 1px),
+                linear-gradient(to right, rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+            background-position: center center;
+        }
+
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            opacity: 0.4;
+            animation: orb-pulse 8s infinite alternate ease-in-out;
+        }
+
+        @keyframes orb-pulse {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.35; }
+            100% { transform: scale(1.25) translate(30px, -20px); opacity: 0.55; }
+        }
+
+        .glass-card-pro {
+            background: rgba(13, 20, 32, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 90, 0, 0.4);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card-pro:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(255, 90, 0, 0.6);
+            box-shadow: 0 20px 40px -10px rgba(255, 90, 0, 0.25), 0 0 20px rgba(255, 90, 0, 0.15);
+        }
+
+        .title-gradient {
+            background: linear-gradient(135deg, #FFFFFF 20%, #E2E8F0 50%, #FF5A00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .orange-glow-text {
+            color: #FF5A00;
+            text-shadow: 0 0 15px rgba(255, 90, 0, 0.5);
+        }
+
+        .corner-brackets { position: relative; }
+        .corner-brackets::before {
+            content: ''; position: absolute; top: -2px; left: -2px; width: 14px; height: 14px;
+            border-top: 2px solid #FF5A00; border-left: 2px solid #FF5A00;
+        }
+        .corner-brackets::after {
+            content: ''; position: absolute; bottom: -2px; right: -2px; width: 14px; height: 14px;
+            border-bottom: 2px solid #FF5A00; border-right: 2px solid #FF5A00;
+        }
+
+        .scanline {
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #FF5A00, #00F0FF, transparent);
+            animation: scan 4s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+
+<body class="vivid-grid min-h-screen relative">
+    
+    <div class="glow-orb w-[500px] h-[500px] bg-orange-DEFAULT top-[-100px] left-[-100px]"></div>
+    <div class="glow-orb w-[600px] h-[600px] bg-cyan-DEFAULT top-[400px] right-[-150px]" style="animation-delay: -4s;"></div>
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-navy-DEFAULT/80 backdrop-blur-xl border-b border-white/10 shadow-2xl">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded bg-gradient-to-br from-orange-DEFAULT to-orange-bright flex items-center justify-center font-mono font-black text-navy-DEFAULT text-xl shadow-lg group-hover:scale-105 transition-transform">
+                    M3
+                </div>
+                <span class="font-mono font-black text-xl tracking-tight text-white">M3D<span class="text-orange-DEFAULT">_</span></span>
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-8 font-mono text-xs font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-orange-DEFAULT transition-colors">Portada / Resumen</a>
+                <a href="por-que.html" class="hover:text-orange-DEFAULT transition-colors">Por qué</a>
+                <a href="segmentos.html" class="hover:text-orange-DEFAULT transition-colors">Segmentos</a>
+                <a href="finanzas.html" class="text-orange-DEFAULT border-b-2 border-orange-DEFAULT pb-1">Finanzas</a>
+                <a href="inversion.html" class="hover:text-orange-DEFAULT transition-colors">Inversión</a>
+                <a href="hoja-de-ruta.html" class="hover:text-orange-DEFAULT transition-colors">Roadmap</a>
+            </nav>
+
+            <a href="contacto.html" class="px-6 py-2.5 rounded font-mono text-xs font-black uppercase tracking-widest bg-gradient-to-r from-orange-DEFAULT to-orange-bright text-navy-DEFAULT shadow-lg hover:shadow-orange-DEFAULT/40 hover:scale-105 transition-all">
+                DATA ROOM
+            </a>
+        </div>
+        <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-orange-DEFAULT to-transparent opacity-75"></div>
+    </header>
+
+
+    <main class="max-w-7xl mx-auto px-6 pt-36 pb-20 flex flex-col gap-16">
+        
+        <div class="flex flex-col items-start gap-4">
+            <div class="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-orange-DEFAULT/10 border border-orange-DEFAULT/30 backdrop-blur-md font-mono text-xs font-bold uppercase tracking-widest text-orange-DEFAULT">
+                DEEP-DIVE &middot; MODELO FINANCIERO
+            </div>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black title-gradient tracking-tight">
+                Finanzas & Economics de Unidad
+            </h1>
+            <p class="text-lg text-slate-300 font-light max-w-3xl leading-relaxed">
+                El modelo económico de M3D aprovecha el alto valor de evitar paradas de planta frente al bajo costo marginal de los insumos digitales de polímero.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="glass-card-pro p-6 rounded-xl flex flex-col justify-between">
+                <span class="font-mono text-xs text-slate-400 uppercase">CAPEX FASE 1</span>
+                <strong class="text-4xl font-mono font-black text-white">$37.7K</strong>
+                <span class="font-mono text-xs text-orange-DEFAULT">VALIDADO & ACTIVO</span>
+            </div>
+            <div class="glass-card-pro p-6 rounded-xl flex flex-col justify-between">
+                <span class="font-mono text-xs text-slate-400 uppercase">PAYBACK ESTIMADO</span>
+                <strong class="text-4xl font-mono font-black text-white">3 MESES</strong>
+                <span class="font-mono text-xs text-cyan-DEFAULT">EN OPERACIÓN</span>
+            </div>
+            <div class="glass-card-pro p-6 rounded-xl flex flex-col justify-between">
+                <span class="font-mono text-xs text-slate-400 uppercase">MARGEN BRUTO</span>
+                <strong class="text-4xl font-mono font-black text-white">~82%</strong>
+                <span class="font-mono text-xs text-orange-DEFAULT">PROMEDIO PONDERADO</span>
+            </div>
+            <div class="glass-card-pro p-6 rounded-xl flex flex-col justify-between">
+                <span class="font-mono text-xs text-slate-400 uppercase">VAN PROYECTADO</span>
+                <strong class="text-4xl font-mono font-black text-white">$3.05M</strong>
+                <span class="font-mono text-xs text-cyan-DEFAULT">MXN A 5 AÑOS</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="glass-card-pro p-8 rounded-xl">
+                <h2 class="text-2xl font-bold text-white mb-4">Estrategia Fiscal RESICO</h2>
+                <p class="text-slate-300 text-sm font-light leading-relaxed mb-4">
+                    Al operar bajo el Régimen Simplificado de Confianza (RESICO) durante los primeros 3 años (con límite de $3.5M MXN anuales), la tasa efectiva del ISR retenido es de apenas entre <strong class="text-orange-DEFAULT">1.0% y 2.5%</strong>.
+                </p>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">
+                    Esto maximiza el flujo libre de caja que puede ser reinvertido o distribuido directamente como dividendos libres a los inversionistas de la ronda.
+                </p>
+            </div>
+
+            <div class="glass-card-pro p-8 rounded-xl">
+                <h2 class="text-2xl font-bold text-white mb-4">Punto de Equilibrio (Breakeven)</h2>
+                <p class="text-slate-300 text-sm font-light leading-relaxed mb-4">
+                    Con los costos fijos contenidos de Cardel (renta de taller, energía trifásica y licencias CAD), M3D alcanza su breakeven operativo con tan solo <strong class="text-cyan-DEFAULT">5 a 6 trabajos industriales de refaccionamiento al mes</strong>.
+                </p>
+                <p class="text-slate-300 text-sm font-light leading-relaxed">
+                    Cada trabajo adicional a partir del sexto representa casi un 85% de utilidad limpia para el fondo de expansión.
+                </p>
+            </div>
+        </div>
+
+    </main>
+
+    
+    <footer class="bg-navy-DEFAULT border-t border-white/10 py-12 relative mt-24">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-orange-DEFAULT font-mono font-black text-navy-DEFAULT flex items-center justify-center">M3</div>
+                <span class="font-mono font-bold text-slate-300">© 2026 M3D Microfábrica 3D Cardel. Todos los derechos reservados.</span>
+            </div>
+            <div class="flex gap-6 font-mono text-xs text-slate-400 uppercase">
+                <a href="index.html" class="hover:text-orange-DEFAULT transition-colors">Portada</a>
+                <a href="por-que.html" class="hover:text-orange-DEFAULT transition-colors">Por qué</a>
+                <a href="segmentos.html" class="hover:text-orange-DEFAULT transition-colors">Segmentos</a>
+                <a href="finanzas.html" class="hover:text-orange-DEFAULT transition-colors">Finanzas</a>
+                <a href="inversion.html" class="hover:text-orange-DEFAULT transition-colors">Inversión</a>
+                <a href="hoja-de-ruta.html" class="hover:text-orange-DEFAULT transition-colors">Roadmap</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
