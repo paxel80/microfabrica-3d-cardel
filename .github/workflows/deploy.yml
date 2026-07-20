@@ -54,3 +54,17 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy . --project-name=la-inconclusa
+
+      - name: 🌐 5. Map Custom Domain (graph.lainconclusa.com)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages domain add graph.lainconclusa.com --project-name=la-inconclusa
+
+      - name: 🌐 6. Map Custom Domain (memory.lainconclusa.com)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages domain add memory.lainconclusa.com --project-name=la-inconclusa
