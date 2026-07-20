@@ -1,425 +1,266 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>M3D - Microfábrica de Precisión | Inversión</title>
-    
-    <style>
-        /* =========================================
-           @layer base & reset
-        ========================================= */
-        :root {
-            --color-navy: #0A0F1C;
-            --color-bone: #F3F3F1;
-            --color-orange: #FF5A00;
-            --color-glass: rgba(10, 15, 28, 0.65);
-            --color-glass-border: rgba(255, 255, 255, 0.1);
-            --color-glass-glow: rgba(255, 90, 0, 0.15);
-            
-            --font-sans: 'Inter', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            
-            /* Fluid Typography */
-            --text-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.875rem);
-            --text-sm: clamp(0.875rem, 0.8vw + 0.5rem, 1rem);
-            --text-base: clamp(1rem, 1vw + 0.75rem, 1.125rem);
-            --text-lg: clamp(1.25rem, 1.5vw + 1rem, 1.5rem);
-            --text-xl: clamp(1.5rem, 2vw + 1rem, 2.5rem);
-            --text-2xl: clamp(2rem, 3vw + 1.5rem, 3.5rem);
-            --text-3xl: clamp(2.5rem, 5vw + 2rem, 5rem);
-            --text-4xl: clamp(3rem, 7vw + 2rem, 7rem);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: var(--color-navy);
-            color: var(--color-bone);
-            font-family: var(--font-sans);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* =========================================
-           @layer layout
-        ========================================= */
-        .container {
-            width: 100%;
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section {
-            padding: 8rem 0;
-            position: relative;
-        }
-
-        .grid-12 {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 2rem;
-        }
-
-        .col-span-12 { grid-column: span 12; }
-        .col-span-8 { grid-column: span 8; }
-        .col-span-6 { grid-column: span 6; }
-        .col-span-4 { grid-column: span 4; }
-        .col-span-3 { grid-column: span 3; }
-
-        @media (max-width: 1024px) {
-            .lg\:col-span-6 { grid-column: span 6; }
-            .lg\:col-span-12 { grid-column: span 12; }
-        }
-
-        @media (max-width: 768px) {
-            .md\:col-span-12 { grid-column: span 12; }
-        }
-
-        /* =========================================
-           @layer components
-        ========================================= */
-        .glass-card {
-            background: var(--color-glass);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--color-glass-border);
-            border-top: 1px solid rgba(255,255,255,0.2);
-            border-radius: 4px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--color-glass-glow);
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
-        }
-
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--color-orange), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .glass-card:hover::before {
-            opacity: 1;
-        }
-
-        .glass-nav {
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            height: 80px;
-            background: rgba(10, 15, 28, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--color-glass-border);
-            z-index: 100;
-            display: flex;
-            align-items: center;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--color-orange);
-            color: var(--color-navy);
-            font-weight: 900;
-            font-family: var(--font-mono);
-            font-size: var(--text-sm);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            padding: 1rem 2rem;
-            text-decoration: none;
-            border: none;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: background 0.2s ease, transform 0.2s ease;
-        }
-
-        .btn-primary:hover {
-            background: #ff752e;
-            transform: translateY(-2px);
-        }
-
-        .cad-background {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            z-index: -1;
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
-            background-position: center center;
-            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
-        }
-
-        /* =========================================
-           @layer utilities
-        ========================================= */
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .items-center { align-items: center; }
-        .justify-between { justify-content: space-between; }
-        
-        .gap-2 { gap: 0.5rem; }
-        .gap-4 { gap: 1rem; }
-        .gap-8 { gap: 2rem; }
-        
-        .mt-4 { margin-top: 1rem; }
-        .mt-8 { margin-top: 2rem; }
-        .mt-16 { margin-top: 4rem; }
-        .mb-2 { margin-bottom: 0.5rem; }
-        .mb-4 { margin-bottom: 1rem; }
-        .mb-8 { margin-bottom: 2rem; }
-
-        .text-bone { color: var(--color-bone); }
-        .text-orange { color: var(--color-orange); }
-        .text-navy { color: var(--color-navy); }
-        .text-muted { color: rgba(243, 243, 241, 0.6); }
-        
-        .text-xs { font-size: var(--text-xs); }
-        .text-sm { font-size: var(--text-sm); }
-        .text-base { font-size: var(--text-base); }
-        .text-lg { font-size: var(--text-lg); }
-        .text-xl { font-size: var(--text-xl); }
-        .text-2xl { font-size: var(--text-2xl); }
-        .text-3xl { font-size: var(--text-3xl); }
-        .text-4xl { font-size: var(--text-4xl); }
-
-        .font-sans { font-family: var(--font-sans); }
-        .font-mono { font-family: var(--font-mono); }
-        
-        .font-light { font-weight: 300; }
-        .font-regular { font-weight: 400; }
-        .font-bold { font-weight: 700; }
-        .font-black { font-weight: 900; }
-
-        .tracking-tight { letter-spacing: -0.04em; }
-        .tracking-widest { letter-spacing: 0.1em; }
-        .uppercase { text-transform: uppercase; }
-
-        .h-screen { height: 100vh; }
-        .relative { position: relative; }
-        
-        .opacity-0 { opacity: 0; }
-        .visibility-hidden { visibility: hidden; }
-
-    </style>
-    <!-- Preload fonts for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
-
-    <!-- Navigation -->
-    <nav class="glass-nav">
-        <div class="container flex items-center justify-between">
-            <div class="font-mono font-black text-lg tracking-tight">M3D<span class="text-orange">_</span></div>
-            <div class="flex gap-8 items-center hidden md:flex" style="display: flex;">
-                <a href="#tesis" class="text-xs font-mono font-bold tracking-widest text-bone uppercase" style="text-decoration: none; margin-right: 2rem;">Tesis</a>
-                <a href="#pilares" class="text-xs font-mono font-bold tracking-widest text-bone uppercase" style="text-decoration: none; margin-right: 2rem;">Pilares</a>
-                <a href="#financiero" class="text-xs font-mono font-bold tracking-widest text-bone uppercase" style="text-decoration: none; margin-right: 2rem;">Métricas</a>
-                <a href="#contacto" class="btn-primary" style="margin-right: 0;">Data Room</a>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="section h-screen flex items-center relative">
-        <div class="cad-background"></div>
-        <div class="container">
-            <div class="grid-12">
-                <div class="col-span-8 lg:col-span-12">
-                    <p class="font-mono text-orange text-sm font-bold tracking-widest uppercase mb-4 stagger-el opacity-0">Sector Marítimo &middot; José Cardel, VER.</p>
-                    <h1 class="text-4xl font-black tracking-tight mb-8 stagger-el opacity-0" style="line-height: 1.1;">
-                        MANUFACTURA <br>
-                        ADITIVA DE <span class="text-orange">PRECISIÓN.</span>
-                    </h1>
-                    <p class="text-lg font-light text-muted mb-8 max-w-2xl stagger-el opacity-0" style="max-width: 600px;">
-                        Microfábrica industrial B2B. Reducimos el downtime operativo marítimo mediante la producción bajo demanda de refacciones de alta resistencia en polímeros avanzados (PA12, PEEK, CF).
-                    </p>
-                    <div class="flex gap-4 stagger-el opacity-0">
-                        <a href="#financiero" class="btn-primary">Ver Unit Economics</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pilares Estructurales -->
-    <section id="pilares" class="section">
-        <div class="container">
-            <h2 class="text-3xl font-black tracking-tight mb-16 stagger-el opacity-0">PILARES ESTRUCTURALES</h2>
-            
-            <div class="grid-12">
-                <!-- Pilar 1 -->
-                <div class="col-span-3 md:col-span-6 lg:col-span-6 glass-card stagger-el opacity-0">
-                    <div class="text-orange font-mono font-black text-2xl mb-4">01</div>
-                    <h3 class="text-xl font-bold mb-2">Hardware</h3>
-                    <p class="text-sm font-light text-muted">
-                        FMS (Flexible Manufacturing Systems) escalables. Impresoras de cinemática CoreXY de grado industrial capaces de extrudir termoplásticos de ingeniería.
-                    </p>
-                </div>
-                
-                <!-- Pilar 2 -->
-                <div class="col-span-3 md:col-span-6 lg:col-span-6 glass-card stagger-el opacity-0">
-                    <div class="text-orange font-mono font-black text-2xl mb-4">02</div>
-                    <h3 class="text-xl font-bold mb-2">Materiales</h3>
-                    <p class="text-sm font-light text-muted">
-                        Sustitución directa de aluminio y acero inoxidable en piezas no críticas mediante compuestos reforzados con fibra de carbono (PA6-CF).
-                    </p>
-                </div>
-                
-                <!-- Pilar 3 -->
-                <div class="col-span-3 md:col-span-6 lg:col-span-6 glass-card stagger-el opacity-0">
-                    <div class="text-orange font-mono font-black text-2xl mb-4">03</div>
-                    <h3 class="text-xl font-bold mb-2">Ubicación</h3>
-                    <p class="text-sm font-light text-muted">
-                        José Cardel, Veracruz. Nodo logístico hiper-estratégico con acceso en &lt; 2 horas al puerto más importante del Golfo de México.
-                    </p>
-                </div>
-                
-                <!-- Pilar 4 -->
-                <div class="col-span-3 md:col-span-6 lg:col-span-6 glass-card stagger-el opacity-0">
-                    <div class="text-orange font-mono font-black text-2xl mb-4">04</div>
-                    <h3 class="text-xl font-bold mb-2">Mercado</h3>
-                    <p class="text-sm font-light text-muted">
-                        Sector Marítimo e Industrial B2B. Costo de inactividad altísimo permite márgenes de contribución superiores al 70% por refacción.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Métricas Financieras (Contadores) -->
-    <section id="financiero" class="section">
-        <div class="cad-background" style="opacity: 0.5;"></div>
-        <div class="container relative">
-            <div class="grid-12">
-                <div class="col-span-12 mb-8 stagger-el opacity-0">
-                    <h2 class="text-3xl font-black tracking-tight">MÉTRICAS CLAVE</h2>
-                </div>
-                
-                <div class="col-span-4 md:col-span-12 lg:col-span-6 glass-card flex flex-col justify-between stagger-el opacity-0">
-                    <span class="font-mono text-xs tracking-widest text-muted uppercase">Margen Bruto Proyectado</span>
-                    <div class="text-4xl font-black text-bone mt-4">
-                        <span class="counter" data-target="78">0</span><span class="text-orange">%</span>
-                    </div>
-                </div>
-
-                <div class="col-span-4 md:col-span-12 lg:col-span-6 glass-card flex flex-col justify-between stagger-el opacity-0">
-                    <span class="font-mono text-xs tracking-widest text-muted uppercase">CAPEX Inicial (Fase 1)</span>
-                    <div class="text-4xl font-black text-bone mt-4">
-                        <span class="text-orange">$</span><span class="counter" data-target="45">0</span><span class="text-orange">k</span>
-                    </div>
-                </div>
-
-                <div class="col-span-4 md:col-span-12 lg:col-span-12 glass-card flex flex-col justify-between stagger-el opacity-0">
-                    <span class="font-mono text-xs tracking-widest text-muted uppercase">Payback Period Estimado</span>
-                    <div class="text-4xl font-black text-bone mt-4">
-                        <span class="counter" data-target="14">0</span> <span class="text-2xl text-muted">meses</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- GSAP CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
-    <!-- Coreografía e Interacción -->
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            gsap.registerPlugin(ScrollTrigger);
-
-            // 1. Hero: Animación inmediata y agresiva (sin ScrollTrigger)
-            const heroSection = document.querySelector('.section:first-of-type');
-            if (heroSection) {
-                const heroEls = heroSection.querySelectorAll('.stagger-el');
-                gsap.fromTo(heroEls,
-                    { y: 20, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.6,
-                        stagger: 0.1,
-                        ease: "power4.out",
-                        delay: 0.1
-                    }
-                );
-            }
-
-            // 2. Resto de Secciones: Fade-Up en cascada con ScrollTrigger
-            const sections = document.querySelectorAll('.section:not(:first-of-type)');
-            
-            sections.forEach(section => {
-                const els = section.querySelectorAll('.stagger-el');
-                if(els.length === 0) return;
-                
-                gsap.fromTo(els, 
-                    { 
-                        y: 30, 
-                        opacity: 0 
-                    },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.85,
-                        stagger: 0.15,
-                        ease: "power3.out",
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "top 80%",
-                            once: true
-                        }
-                    }
-                );
-            });
-
-            // Contadores Financieros
-            const counters = document.querySelectorAll('.counter');
-            
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'), 10);
-                
-                ScrollTrigger.create({
-                    trigger: counter,
-                    start: "top 85%",
-                    once: true,
-                    onEnter: () => {
-                        gsap.to(counter, {
-                            innerHTML: target,
-                            duration: 2,
-                            snap: { innerHTML: 1 },
-                            ease: "power2.out",
-                            onUpdate: function() {
-                                counter.innerHTML = Math.round(this.targets()[0].innerHTML);
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>M3D - Microfábrica de Precisión | Inversión</title><style>
+/* =========================================
+@layer base & reset
+========================================= */
+:root {
+--color-navy: #0A0F1C;
+--color-bone: #F3F3F1;
+--color-orange: #FF5A00;
+--color-glass: rgba(10, 15, 28, 0.65);
+--color-glass-border: rgba(255, 255, 255, 0.1);
+--color-glass-glow: rgba(255, 90, 0, 0.15);
+--font-sans: 'Inter', system-ui, sans-serif;
+--font-mono: 'JetBrains Mono', monospace;
+/* Fluid Typography */
+--text-xs: clamp(0.75rem, 0.7vw + 0.5rem, 0.875rem);
+--text-sm: clamp(0.875rem, 0.8vw + 0.5rem, 1rem);
+--text-base: clamp(1rem, 1vw + 0.75rem, 1.125rem);
+--text-lg: clamp(1.25rem, 1.5vw + 1rem, 1.5rem);
+--text-xl: clamp(1.5rem, 2vw + 1rem, 2.5rem);
+--text-2xl: clamp(2rem, 3vw + 1.5rem, 3.5rem);
+--text-3xl: clamp(2.5rem, 5vw + 2rem, 5rem);
+--text-4xl: clamp(3rem, 7vw + 2rem, 7rem);
+}
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+body {
+background-color: var(--color-navy);
+color: var(--color-bone);
+font-family: var(--font-sans);
+line-height: 1.6;
+overflow-x: hidden;
+-webkit-font-smoothing: antialiased;
+}
+/* =========================================
+@layer layout
+========================================= */
+.container {
+width: 100%;
+max-width: 1440px;
+margin: 0 auto;
+padding: 0 2rem;
+}
+.section {
+padding: 8rem 0;
+position: relative;
+}
+.grid-12 {
+display: grid;
+grid-template-columns: repeat(12, 1fr);
+gap: 2rem;
+}
+.col-span-12 { grid-column: span 12; }
+.col-span-8 { grid-column: span 8; }
+.col-span-6 { grid-column: span 6; }
+.col-span-4 { grid-column: span 4; }
+.col-span-3 { grid-column: span 3; }
+@media (max-width: 1024px) {
+.lg\:col-span-6 { grid-column: span 6; }
+.lg\:col-span-12 { grid-column: span 12; }
+}
+@media (max-width: 768px) {
+.md\:col-span-12 { grid-column: span 12; }
+}
+/* =========================================
+@layer components
+========================================= */
+.glass-card {
+background: var(--color-glass);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border: 1px solid var(--color-glass-border);
+border-top: 1px solid rgba(255,255,255,0.2);
+border-radius: 4px;
+box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+padding: 2.5rem;
+position: relative;
+overflow: hidden;
+transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-card:hover {
+transform: translateY(-5px);
+border-color: var(--color-glass-glow);
+box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+}
+.glass-card::before {
+content: '';
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 1px;
+background: linear-gradient(90deg, transparent, var(--color-orange), transparent);
+opacity: 0;
+transition: opacity 0.3s ease;
+}
+.glass-card:hover::before {
+opacity: 1;
+}
+.glass-nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+height: 80px;
+background: rgba(10, 15, 28, 0.8);
+backdrop-filter: blur(12px);
+-webkit-backdrop-filter: blur(12px);
+border-bottom: 1px solid var(--color-glass-border);
+z-index: 100;
+display: flex;
+align-items: center;
+}
+.btn-primary {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+background: var(--color-orange);
+color: var(--color-navy);
+font-weight: 900;
+font-family: var(--font-mono);
+font-size: var(--text-sm);
+text-transform: uppercase;
+letter-spacing: 0.1em;
+padding: 1rem 2rem;
+text-decoration: none;
+border: none;
+border-radius: 2px;
+cursor: pointer;
+transition: background 0.2s ease, transform 0.2s ease;
+}
+.btn-primary:hover {
+background: #ff752e;
+transform: translateY(-2px);
+}
+.cad-background {
+position: absolute;
+top: 0; left: 0; right: 0; bottom: 0;
+z-index: -1;
+background-image:
+linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+background-position: center center;
+mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+-webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+}
+/* =========================================
+@layer utilities
+========================================= */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.gap-8 { gap: 2rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-8 { margin-top: 2rem; }
+.mt-16 { margin-top: 4rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-8 { margin-bottom: 2rem; }
+.text-bone { color: var(--color-bone); }
+.text-orange { color: var(--color-orange); }
+.text-navy { color: var(--color-navy); }
+.text-muted { color: rgba(243, 243, 241, 0.6); }
+.text-xs { font-size: var(--text-xs); }
+.text-sm { font-size: var(--text-sm); }
+.text-base { font-size: var(--text-base); }
+.text-lg { font-size: var(--text-lg); }
+.text-xl { font-size: var(--text-xl); }
+.text-2xl { font-size: var(--text-2xl); }
+.text-3xl { font-size: var(--text-3xl); }
+.text-4xl { font-size: var(--text-4xl); }
+.font-sans { font-family: var(--font-sans); }
+.font-mono { font-family: var(--font-mono); }
+.font-light { font-weight: 300; }
+.font-regular { font-weight: 400; }
+.font-bold { font-weight: 700; }
+.font-black { font-weight: 900; }
+.tracking-tight { letter-spacing: -0.04em; }
+.tracking-widest { letter-spacing: 0.1em; }
+.uppercase { text-transform: uppercase; }
+.h-screen { height: 100vh; }
+.relative { position: relative; }
+.opacity-0 { opacity: 0; }
+.visibility-hidden { visibility: hidden; }
+</style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700;900&display=swap" rel="stylesheet"></head><body><nav class="glass-nav"><div class="container flex items-center justify-between"><div class="font-mono font-black text-lg tracking-tight">M3D<span class="text-orange">_</span></div><div class="flex gap-8 items-center hidden md:flex" style="display: flex;"><a href="#tesis" class="text-xs font-mono font-bold tracking-widest text-bone uppercase" style="text-decoration: none; margin-right: 2rem;">Tesis</a><a href="#pilares" class="text-xs font-mono font-bold tracking-widest text-bone uppercase" style="text-decoration: none; margin-right: 2rem;">Pilares</a><a href="#financiero" class="text-xs font-mono font-bold tracking-widest text-bone uppercase" style="text-decoration: none; margin-right: 2rem;">Métricas</a><a href="#contacto" class="btn-primary" style="margin-right: 0;">Data Room</a></div></div></nav><section class="section h-screen flex items-center relative"><div class="cad-background"></div><div class="container"><div class="grid-12"><div class="col-span-8 lg:col-span-12"><p class="font-mono text-orange text-sm font-bold tracking-widest uppercase mb-4 stagger-el opacity-0">Sector Marítimo &middot; José Cardel, VER.</p><h1 class="text-4xl font-black tracking-tight mb-8 stagger-el opacity-0" style="line-height: 1.1;">
+MANUFACTURA <br>
+ADITIVA DE <span class="text-orange">PRECISIÓN.</span></h1><p class="text-lg font-light text-muted mb-8 max-w-2xl stagger-el opacity-0" style="max-width: 600px;">
+Microfábrica industrial B2B. Reducimos el downtime operativo marítimo mediante la producción bajo demanda de refacciones de alta resistencia en polímeros avanzados (PA12, PEEK, CF).
+</p><div class="flex gap-4 stagger-el opacity-0"><a href="#financiero" class="btn-primary">Ver Unit Economics</a></div></div></div></div></section><section id="pilares" class="section"><div class="container"><h2 class="text-3xl font-black tracking-tight mb-16 stagger-el opacity-0">PILARES ESTRUCTURALES</h2><div class="grid-12"><div class="col-span-3 md:col-span-6 lg:col-span-6 glass-card stagger-el opacity-0"><div class="text-orange font-mono font-black text-2xl mb-4">01</div><h3 class="text-xl font-bold mb-2">Hardware</h3><p class="text-sm font-light text-muted">
+FMS (Flexible Manufacturing Systems) escalables. Impresoras de cinemática CoreXY de grado industrial capaces de extrudir termoplásticos de ingeniería.
+</p></div><div class="col-span-3 md:col-span-6 lg:col-span-6 glass-card stagger-el opacity-0"><div class="text-orange font-mono font-black text-2xl mb-4">02</div><h3 class="text-xl font-bold mb-2">Materiales</h3><p class="text-sm font-light text-muted">
+Sustitución directa de aluminio y acero inoxidable en piezas no críticas mediante compuestos reforzados con fibra de carbono (PA6-CF).
+</p></div><div class="col-span-3 md:col-span-6 lg:col-span-6 glass-card stagger-el opacity-0"><div class="text-orange font-mono font-black text-2xl mb-4">03</div><h3 class="text-xl font-bold mb-2">Ubicación</h3><p class="text-sm font-light text-muted">
+José Cardel, Veracruz. Nodo logístico hiper-estratégico con acceso en &lt; 2 horas al puerto más importante del Golfo de México.
+</p></div><div class="col-span-3 md:col-span-6 lg:col-span-6 glass-card stagger-el opacity-0"><div class="text-orange font-mono font-black text-2xl mb-4">04</div><h3 class="text-xl font-bold mb-2">Mercado</h3><p class="text-sm font-light text-muted">
+Sector Marítimo e Industrial B2B. Costo de inactividad altísimo permite márgenes de contribución superiores al 70% por refacción.
+</p></div></div></div></section><section id="financiero" class="section"><div class="cad-background" style="opacity: 0.5;"></div><div class="container relative"><div class="grid-12"><div class="col-span-12 mb-8 stagger-el opacity-0"><h2 class="text-3xl font-black tracking-tight">MÉTRICAS CLAVE</h2></div><div class="col-span-4 md:col-span-12 lg:col-span-6 glass-card flex flex-col justify-between stagger-el opacity-0"><span class="font-mono text-xs tracking-widest text-muted uppercase">Margen Bruto Proyectado</span><div class="text-4xl font-black text-bone mt-4"><span class="counter" data-target="78">0</span><span class="text-orange">%</span></div></div><div class="col-span-4 md:col-span-12 lg:col-span-6 glass-card flex flex-col justify-between stagger-el opacity-0"><span class="font-mono text-xs tracking-widest text-muted uppercase">CAPEX Inicial (Fase 1)</span><div class="text-4xl font-black text-bone mt-4"><span class="text-orange">$</span><span class="counter" data-target="45">0</span><span class="text-orange">k</span></div></div><div class="col-span-4 md:col-span-12 lg:col-span-12 glass-card flex flex-col justify-between stagger-el opacity-0"><span class="font-mono text-xs tracking-widest text-muted uppercase">Payback Period Estimado</span><div class="text-4xl font-black text-bone mt-4"><span class="counter" data-target="14">0</span><span class="text-2xl text-muted">meses</span></div></div></div></div></section><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script><script>
+document.addEventListener("DOMContentLoaded", () => {
+gsap.registerPlugin(ScrollTrigger);
+// 1. Hero: Animación inmediata y agresiva (sin ScrollTrigger)
+const heroSection = document.querySelector('.section:first-of-type');
+if (heroSection) {
+const heroEls = heroSection.querySelectorAll('.stagger-el');
+gsap.fromTo(heroEls,
+{ y: 20, opacity: 0 },
+{
+y: 0,
+opacity: 1,
+duration: 0.6,
+stagger: 0.1,
+ease: "power4.out",
+delay: 0.1
+}
+);
+}
+// 2. Resto de Secciones: Fade-Up en cascada con ScrollTrigger
+const sections = document.querySelectorAll('.section:not(:first-of-type)');
+sections.forEach(section => {
+const els = section.querySelectorAll('.stagger-el');
+if(els.length === 0) return;
+gsap.fromTo(els,
+{
+y: 30,
+opacity: 0
+},
+{
+y: 0,
+opacity: 1,
+duration: 0.85,
+stagger: 0.15,
+ease: "power3.out",
+scrollTrigger: {
+trigger: section,
+start: "top 80%",
+once: true
+}
+}
+);
+});
+// Contadores Financieros
+const counters = document.querySelectorAll('.counter');
+counters.forEach(counter => {
+const target = parseInt(counter.getAttribute('data-target'), 10);
+ScrollTrigger.create({
+trigger: counter,
+start: "top 85%",
+once: true,
+onEnter: () => {
+gsap.to(counter, {
+innerHTML: target,
+duration: 2,
+snap: { innerHTML: 1 },
+ease: "power2.out",
+onUpdate: function() {
+counter.innerHTML = Math.round(this.targets()[0].innerHTML);
+}
+});
+}
+});
+});
+});
+</script></body></html>

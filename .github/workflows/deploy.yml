@@ -1,28 +1,54 @@
-name: Deploy to Cloudflare Pages
+name: CI/CD Guard Pipeline & Cloudflare Pages Deploy
 
 on:
   push:
     branches:
       - master
       - main
+  pull_request:
+    branches:
+      - master
+      - main
 
 jobs:
-  deploy:
+  quality_gate_and_deploy:
+    name: Quality Audit & Deployment
     runs-on: ubuntu-latest
     permissions:
       contents: read
       deployments: write
+      pull-requests: write
 
     steps:
-      - name: Checkout Repository
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: ⚙️ Setup Node.js Environment
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
-      - name: Deploy to Cloudflare Pages
+      - name: 📦 Install Dependencies
+        run: npm ci || npm install
+
+      - name: 🛡️ 1. HTML & UTF-8 Error Guillotine (Linting)
+        run: npx htmlhint "*.html" --rules="tagname-lowercase,attr-lowercase,attr-value-double-quotes,doctype-first,tag-pair,spec-char-escape,id-unique"
+
+      - name: ⚡ 2. Brutalist HTML/CSS Server-Side Minification
+        run: node scripts/minify.js
+
+      - name: 🚦 3. Speed & SEO Guard (Lighthouse Audit)
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          urls: |
+            http://localhost:8080/index.html
+            http://localhost:8080/inversion.html
+          uploadArtifacts: true
+          temporaryServerCommand: npx http-server . -p 8080
+          budgetPath: ''
+
+      - name: 🚀 4. Cloudflare Pages Deployment (Production / Preview)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
