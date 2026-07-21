@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Graph - Catálogo 3D</title>
+  <meta name="description" content="Visualización interactiva del catálogo 3D mediante grafos">
+  
+  <!-- Tipografía -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Estilos base y grafo -->
+  <link rel="stylesheet" href="css/grafo.css">
+</head>
+<body>
+  
+  <!-- Header -->
+  <header class="glass-header">
+    <div class="logo">
+      <h1>Grafo de Conocimiento <span>3D</span></h1>
+    </div>
+    <div class="status-indicator">
+      <span class="dot" id="db-status-dot"></span>
+      <span id="db-status-text">Conectando a Neo4j...</span>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="workspace">
+    
+    <!-- Grafo Canvas -->
+    <div id="network-canvas">
+      <!-- Vis.js insertará el canvas aquí -->
+    </div>
+
+    <!-- Sidebar Detalles -->
+    <aside class="sidebar glass-panel" id="sidebar">
+      <button id="close-sidebar" class="close-btn">&times;</button>
+      <div class="sidebar-content">
+        <div class="tag" id="node-tag">TIPO DE NODO</div>
+        <h2 id="node-title">Selecciona un nodo</h2>
+        <p id="node-desc" class="desc">Haz clic en cualquier nodo para ver sus propiedades financieras, operativas o de negocio.</p>
+        
+        <div class="properties-grid" id="properties-grid">
+          <!-- Propiedades dinámicas irán aquí -->
+        </div>
+
+        <div class="scoring-section" id="scoring-section" style="display: none;">
+          <h3>Evaluación y Scoring</h3>
+          <div class="score-card">
+            <div class="score-value" id="score-value">0.0</div>
+            <div class="score-label">Atractividad</div>
+          </div>
+          <div class="strategy-badge" id="strategy-badge">Estrategia</div>
+          <p id="scoring-note" class="note"></p>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Librerías -->
+  <script src="https://cdn.jsdelivr.net/npm/neo4j-driver@5.16.0/lib/browser/neo4j-web.min.js"></script>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="js/grafo.js"></script>
+</body>
+</html>

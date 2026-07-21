@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #080C14;
+  --color-navy-light: #121A2F;
+  --color-orange: #FF5A00;
+  --color-orange-glow: rgba(255, 90, 0, 0.4);
+  --color-cyan: #00F0FF;
+  --color-cyan-glow: rgba(0, 240, 255, 0.4);
+  
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-navy text-slate-300 font-sans antialiased overflow-x-hidden selection:bg-orange selection:text-white;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-white tracking-tight;
+  }
+}
+
+@layer utilities {
+  .vivid-grid {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+  }
+
+  .glass-card-pro {
+    @apply bg-navy-light/40 backdrop-blur-md border border-white/5 rounded-2xl shadow-2xl relative overflow-hidden transition-all duration-300;
+  }
+
+  .glass-card-pro::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-300 pointer-events-none;
+  }
+
+  .glass-card-pro:hover::before {
+    @apply opacity-100;
+  }
+
+  .glass-card-pro:hover {
+    @apply border-white/10 shadow-[0_0_30px_rgba(0,240,255,0.1)];
+    transform: translateY(-2px);
+  }
+
+  .title-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400;
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 20px var(--color-cyan-glow);
+  }
+
+  .text-glow-orange {
+    text-shadow: 0 0 20px var(--color-orange-glow);
+  }
+
+  @keyframes scan {
+    0% { top: 0; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+}

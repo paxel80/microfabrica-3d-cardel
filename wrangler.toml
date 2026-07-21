@@ -1,6 +1,6 @@
 name = "la-inconclusa"
 compatibility_date = "2024-09-23"
-pages_build_output_dir = "dist"
+pages_build_output_dir = "app-v2/dist"
 
 [vars]
 CONTACT_TO_EMAIL = "hola@microfabrica3d.mx"

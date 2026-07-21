@@ -29,28 +29,24 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: 📦 Install Dependencies
-        run: npm ci || npm install
+      - name: 📦 Install Dependencies & Build React App
+        run: |
+          cd app-v2
+          npm install
+          npm run build
 
-      - name: 🛡️ 1. HTML & UTF-8 Error Guillotine (Linting)
-        run: npx htmlhint "*.html" --rules="tagname-lowercase,attr-lowercase,attr-value-double-quotes,doctype-first,tag-pair,spec-char-escape,id-unique"
-
-      - name: ⚡ 2. Brutalist HTML/CSS Server-Side Minification
-        run: node scripts/minify.js
-
-      - name: 🚦 3. Speed & SEO Guard (Lighthouse Audit)
+      - name: 🚦 2. Speed & SEO Guard (Lighthouse Audit)
         uses: treosh/lighthouse-ci-action@v12
         with:
           urls: |
-            http://localhost:8080/index.html
-            http://localhost:8080/inversion.html
+            http://localhost:8080/
           uploadArtifacts: true
-          temporaryServerCommand: npx http-server . -p 8080
+          temporaryServerCommand: npx http-server ./app-v2/dist -p 8080
           budgetPath: ''
 
-      - name: 🚀 4. Cloudflare Pages Deployment (Production / Preview)
+      - name: 🚀 3. Cloudflare Pages Deployment (Production / Preview)
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=la-inconclusa
+          command: pages deploy ./app-v2/dist --project-name=la-inconclusa
